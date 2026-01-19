@@ -76,8 +76,7 @@ export async function summarizeText(context: { env: Env }, text: string) {
     messages: [
       {
         role: "system",
-        content:
-          `你是一个专业的中文摘要生成助手。
+        content: `你是一个专业的中文摘要生成助手。
 请遵循以下规则：
 1. **语言限制**：无论原文是什么语言，必须且只能输出**简体中文**。
 2. **长度限制**：控制在 200 字以内。

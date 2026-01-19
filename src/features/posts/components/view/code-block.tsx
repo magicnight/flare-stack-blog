@@ -91,9 +91,9 @@ export const CodeBlock = memo(({ code, language }: CodeBlockProps) => {
         </div>
 
         {/* Code Area */}
-        <div className="relative p-0 overflow-x-auto custom-scrollbar">
+        <div className="relative p-0 overflow-x-auto custom-scrollbar bg-zinc-50 dark:bg-zinc-900 rounded-b-sm">
           <div
-            className={`p-6 text-sm font-mono leading-relaxed [&>pre]:bg-transparent! transition-opacity duration-300 bg-zinc-50 dark:bg-zinc-900 rounded-b-sm ${
+            className={`p-6 text-sm font-mono leading-relaxed [&>pre]:bg-transparent! transition-opacity duration-300 ${
               !language || ["text", "plaintext", "txt"].includes(language)
                 ? "[&_.shiki]:text-muted-foreground [&_span]:text-muted-foreground"
                 : ""
