@@ -7,6 +7,7 @@ import type { UpdateCheckResult } from "./version.schema";
 import type { Result } from "@/lib/error";
 import { err, ok } from "@/lib/error";
 import * as CacheService from "@/features/cache/cache.service";
+import { serverEnv } from "@/lib/env/server.env";
 
 const GITHUB_REPO = "du2333/flare-stack-blog";
 
@@ -25,14 +26,19 @@ export async function checkForUpdate(
   force = false,
 ): Promise<CheckForUpdateResult> {
   const fetcher = async () => {
+    const headers: Record<string, string> = {
+      "User-Agent": "flare-stack-blog",
+      Accept: "application/vnd.github.v3+json",
+    };
+
+    const githubToken = serverEnv(context.env).GITHUB_TOKEN;
+    if (githubToken) {
+      headers.Authorization = `Bearer ${githubToken}`;
+    }
+
     const response = await fetch(
       `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`,
-      {
-        headers: {
-          "User-Agent": "flare-stack-blog",
-          Accept: "application/vnd.github.v3+json",
-        },
-      },
+      { headers },
     );
 
     if (!response.ok) {
