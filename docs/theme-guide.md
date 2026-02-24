@@ -148,7 +148,7 @@ bun run create-theme
 
 脚本会创建所有必需的布局、页面和骨架屏文件，组件实现为占位符，方便你在此基础上逐步替换为真实 UI。完成后按提示：
 
-1. 在 `vite.config.ts` 的 `z.enum(["default"])` 中加入新主题名
+1. 在 `src/features/theme/config.ts` 中注册新主题（详见下文 [注册主题](#Step-5注册主题并启动)）
 2. 在 `.env` 中设置 `THEME=<your-theme>` 并启动开发
 
 ---
@@ -248,22 +248,21 @@ export default {
 
 ### Step 5：注册主题并启动
 
-打开 `src/features/theme/config.ts`，在 `themeNames` 中将你的主题名加入枚举：
+打开 `src/features/theme/config.ts`，进行以下操作：
+
+1. 在 `themeNames` 中加入新主题名。
+2. 在 `themes` 常量中增加该主题的配置（如 `viewTransition`）。
+
+> [!NOTE]
+> `vite.config.ts` 会自动从该文件中同步主题列表，因此你无需手动修改 Vite 配置。
 
 ```ts
 // src/features/theme/config.ts
-export const themeNames = ["default", "my-theme"] as const;
-export type ThemeName = (typeof themeNames)[number];
-
-export interface ThemeConfig {
-  viewTransition: boolean;
-}
-
+export const themeNames = ["default", "fuwari", "my-theme"] as const;
+// ...
 export const themes: Record<ThemeName, ThemeConfig> = {
-  default: {
-    viewTransition: true,
-  },
-  my-theme: {
+  // ...
+  "my-theme": {
     viewTransition: false,
   },
 };
@@ -343,7 +342,7 @@ export const blogConfig = {
   // ... 公共配置 ...
   theme: {
     fuwari: {
-      homeBg: env.VITE_FUWARI_HOME_BG || "/images/home-bg.jpg",
+      homeBg: env.VITE_FUWARI_HOME_BG || "/images/home-bg.webp",
       avatar: env.VITE_FUWARI_AVATAR || "/images/avatar.png",
     },
     // "my-theme": { ... }
@@ -355,10 +354,10 @@ export const blogConfig = {
 
 使用 `VITE_<THEME_NAME>_<KEY>` 格式，例如：
 
-| 环境变量              | 说明                  | 默认值                |
-| :-------------------- | :-------------------- | :-------------------- |
-| `VITE_FUWARI_HOME_BG` | Fuwari 首页背景图路径 | `/images/home-bg.jpg` |
-| `VITE_FUWARI_AVATAR`  | Fuwari 侧边栏头像路径 | `/images/avatar.png`  |
+| 环境变量              | 说明                  | 默认值                 |
+| :-------------------- | :-------------------- | :--------------------- |
+| `VITE_FUWARI_HOME_BG` | Fuwari 首页背景图路径 | `/images/home-bg.webp` |
+| `VITE_FUWARI_AVATAR`  | Fuwari 侧边栏头像路径 | `/images/avatar.png`   |
 
 新增的环境变量需要同步添加到 `src/lib/env/client.env.ts` 的 Zod schema 中。
 

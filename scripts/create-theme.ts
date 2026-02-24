@@ -232,7 +232,9 @@ export default {
 
   console.log(`\n✅ 主题 "${name}" 已创建于 ${themeDir}`);
   console.log("\n后续步骤：");
-  console.log('  1. 在 vite.config.ts 的 z.enum(["default"]) 中加入新主题名');
+  console.log(
+    "  1. 在 src/features/theme/config.ts 中加入新主题名并配置（详见 docs/theme-guide.md）",
+  );
   console.log(`  2. 在 .env 中设置 THEME=${name} 并启动开发`);
 }
 
